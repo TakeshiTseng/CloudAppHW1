@@ -1,0 +1,2 @@
+serviceClass: tw.ttucse.cloudhw1.client.LoginService
+path: FD0DB998C948AF2A60674F87637EE194.gwt.rpc
