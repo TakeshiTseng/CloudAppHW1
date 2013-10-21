@@ -1,6 +1,6 @@
 package tw.ttucse.cloudhw1.client;
 
-import com.google.appengine.api.users.User;
+import tw.ttucse.cloudhw.entity.User;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
