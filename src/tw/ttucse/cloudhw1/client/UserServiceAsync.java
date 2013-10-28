@@ -1,4 +1,6 @@
 package tw.ttucse.cloudhw1.client;
+import tw.ttucse.cloudhw1.jdo.User;
+
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface UserServiceAsync {
