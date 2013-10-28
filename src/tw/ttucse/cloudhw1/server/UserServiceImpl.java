@@ -7,9 +7,11 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 public class UserServiceImpl extends RemoteServiceServlet implements UserService{
 
+	private static final long serialVersionUID = -7342499803125530350L;
+
 	@Override
 	public void addUser(User user) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 

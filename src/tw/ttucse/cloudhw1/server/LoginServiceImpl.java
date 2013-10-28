@@ -18,9 +18,11 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 	public boolean login(String username, String password)
 			throws IllegalArgumentException {
 		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
-		String query = "SELECT FROM " + User.class.getName() + "WHERE username == \'" + username + "\'";
+		String query = "SELECT FROM " + User.class.getName() + " WHERE username == \'" + username + "\'";
 		@SuppressWarnings("unchecked")
-		List<User> users = (List<User>) pm.newQuery(query);
+		List<User> users = (List<User>) pm.newQuery(query).execute();
+		
+		pm.close();
 		if(users.isEmpty()){
 			return false;
 		} else {
