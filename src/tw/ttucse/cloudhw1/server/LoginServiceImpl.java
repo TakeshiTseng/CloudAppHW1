@@ -1,8 +1,13 @@
 package tw.ttucse.cloudhw1.server;
 
-import tw.ttucse.cloudhw1.client.LoginService;
+import java.util.List;
 
-import com.google.gwt.core.client.GWT;
+import javax.jdo.PersistenceManager;
+
+import tw.ttucse.cloudhw1.client.LoginService;
+import tw.ttucse.cloudhw1.jdo.PMF;
+import tw.ttucse.cloudhw1.jdo.User;
+
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 public class LoginServiceImpl extends RemoteServiceServlet implements LoginService{
@@ -12,8 +17,16 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 	@Override
 	public boolean login(String username, String password)
 			throws IllegalArgumentException {
-		
-		return username.equals("admin") && password.equals("admin");
+		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
+		String query = "SELECT FROM " + User.class.getName() + "WHERE username == \'" + username + "\'";
+		@SuppressWarnings("unchecked")
+		List<User> users = (List<User>) pm.newQuery(query);
+		if(users.isEmpty()){
+			return false;
+		} else {
+			String pwd = users.get(0).getPassword();
+			return password.equals(pwd);
+		}
 	}
 
 }
