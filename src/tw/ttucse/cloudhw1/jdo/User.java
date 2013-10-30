@@ -1,30 +1,31 @@
 package tw.ttucse.cloudhw1.jdo;
 
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
+import javax.jdo.annotations.*;
+import com.google.appengine.api.datastore.Key;
 
-
-@PersistenceCapable(identityType = IdentityType.APPLICATION)
+@PersistenceCapable
 public class User {
 	@PrimaryKey
-    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    private Long id;
+	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+	private Key key;
 
-    @Persistent
-    private String username;
+	@Persistent
+	private String username;
 
-    @Persistent
-    private String password;
+	@Persistent
+	private String password;
 
-	public Long getId() {
-		return id;
+	public User(String username, String password) {
+		this.username = username;
+		this.password = password;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public Key getKey() {
+		return key;
+	}
+	
+	public void setKey(Key key) {
+		this.key = key;
 	}
 
 	public String getUsername() {
@@ -43,6 +44,4 @@ public class User {
 		this.password = password;
 	}
 
-    
-    
 }
