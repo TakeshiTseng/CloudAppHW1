@@ -1,33 +1,30 @@
-package tw.ttucse.cloudhw1.jdo;
+package tw.ttucse.cloudhw1.client;
+
+import java.io.Serializable;
 
 import javax.jdo.annotations.*;
-import com.google.appengine.api.datastore.Key;
 
 @PersistenceCapable
-public class User {
-	@PrimaryKey
+public class User implements Serializable{
+	@PrimaryKey 
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	private Key key;
+	private String account;
 
 	@Persistent
-	private String username;
+	private String username="";
 
 	@Persistent
 	private String password;
 
-	public User(String username, String password) {
-		this.username = username;
+	public User(String account, String password) {
+		this.account = account;
 		this.password = password;
 	}
-
-	public Key getKey() {
-		return key;
+	
+	public User() {
+		// TODO Auto-generated constructor stub
 	}
 	
-	public void setKey(Key key) {
-		this.key = key;
-	}
-
 	public String getUsername() {
 		return username;
 	}
@@ -42,6 +39,14 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public String getAccount() {
+		return account;
+	}
+
+	public void setAccount(String account) {
+		this.account = account;
 	}
 
 }

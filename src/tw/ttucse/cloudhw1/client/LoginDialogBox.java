@@ -1,5 +1,7 @@
 package tw.ttucse.cloudhw1.client;
 
+import java.util.List;
+
 import sun.awt.HorizBagLayout;
 
 import com.google.gwt.core.client.GWT;
@@ -17,6 +19,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class LoginDialogBox extends DialogBox implements ClickHandler{
 	private final LoginServiceAsync loginServiceAsync = GWT.create(LoginService.class);
+	private final UserServiceAsync userServiceAsync = GWT.create(UserService.class);
 	LoginDialogBox thisPanel;
 	private PasswordTextBox password;
 	private TextBox username;
@@ -56,9 +59,9 @@ public class LoginDialogBox extends DialogBox implements ClickHandler{
 	
 	@Override
 	public void onClick(ClickEvent event) {
-		String uname = username.getText();
+		String account = username.getText();
 		String pwd = password.getText();
-		loginServiceAsync.login(uname, pwd, new AsyncCallback<Boolean>() {
+		loginServiceAsync.login(account, pwd, new AsyncCallback<Boolean>() {
 			
 			@Override
 			public void onSuccess(Boolean result) {
@@ -84,6 +87,21 @@ public class LoginDialogBox extends DialogBox implements ClickHandler{
 					dialogBox.setWidget(verticalPanel);
 					thisPanel.hide();
 					dialogBox.center();
+					
+
+					userServiceAsync.getUsers(new AsyncCallback<List<User>>(){
+
+						@Override
+						public void onFailure(Throwable caught) {
+							System.out.println("failure");
+						}
+
+						@Override
+						public void onSuccess(List<User> result) {
+							System.out.println("success");
+						}
+						
+					});
 				}
 				
 			}

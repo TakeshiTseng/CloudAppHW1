@@ -1,31 +1,35 @@
 package tw.ttucse.cloudhw1.server;
 
+import java.util.List;
+
 import javax.jdo.PersistenceManager;
 
+import tw.ttucse.cloudhw1.client.PMF;
+import tw.ttucse.cloudhw1.client.User;
 import tw.ttucse.cloudhw1.client.UserService;
-import tw.ttucse.cloudhw1.jdo.PMF;
-import tw.ttucse.cloudhw1.jdo.User;
 
+import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 public class UserServiceImpl extends RemoteServiceServlet implements UserService{
+	private static final long serialVersionUID = -2554257850851305233L;
 
-	private static final long serialVersionUID = -7342499803125530350L;
-	
+
 	public UserServiceImpl() {
-		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
-		User user = new User("admin", "admin");
-		try {
-			pm.makePersistent(user);
-		} finally {
-			pm.close();
-		}
+		System.out.println("userserviceImpl");
+//		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
+//		User user = new User("admin", "admin");
+//		try {
+//			pm.makePersistent(user);
+//		} finally {
+//			pm.close();
+//		}
 	}
 	
 	
 	@Override
 	public void addUser(User user) {
-		
+		System.out.println("test");
 		
 	}
 
@@ -45,6 +49,23 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	public boolean deleteUser(User user) throws IllegalArgumentException {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+
+	@Override
+	public List<User> getUsers() throws IllegalArgumentException {
+		System.out.println("test");
+		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
+		String query = "SELECT FROM " + User.class.getName() ;
+		
+		try{
+			@SuppressWarnings("unchecked")
+			List<User> users = (List<User>) pm.newQuery(query).execute();
+			System.out.println(users.size());
+			return users;
+		} finally{
+			pm.close();
+		}
 	}
 
 }

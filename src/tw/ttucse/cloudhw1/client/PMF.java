@@ -1,4 +1,4 @@
-package tw.ttucse.cloudhw1.jdo;
+package tw.ttucse.cloudhw1.client;
 
 import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManagerFactory;
@@ -11,5 +11,5 @@ public final class PMF {
 
     public static PersistenceManagerFactory getInstance() {
         return pmfInstance;
-    }
+    } 
 }

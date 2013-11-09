@@ -1,15 +1,16 @@
 package tw.ttucse.cloudhw1.client;
 
 
-import tw.ttucse.cloudhw1.jdo.User;
+import java.util.List;
+
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 @RemoteServiceRelativePath("user")
 public interface UserService extends RemoteService{
-	void addUser(User user);
-	public void editUser(User user) throws IllegalArgumentException;
-	public User getUser(String account) throws IllegalArgumentException;
-	public boolean deleteUser(User user) throws IllegalArgumentException;
-	
+	void addUser(User user) throws IllegalArgumentException;
+	void editUser(User user) throws IllegalArgumentException;
+	User getUser(String account) throws IllegalArgumentException;
+	boolean deleteUser(User user) throws IllegalArgumentException;
+	List<User> getUsers() throws IllegalArgumentException;
 }

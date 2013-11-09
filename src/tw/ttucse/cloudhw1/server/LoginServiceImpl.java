@@ -5,8 +5,8 @@ import java.util.List;
 import javax.jdo.PersistenceManager;
 
 import tw.ttucse.cloudhw1.client.LoginService;
-import tw.ttucse.cloudhw1.jdo.PMF;
-import tw.ttucse.cloudhw1.jdo.User;
+import tw.ttucse.cloudhw1.client.PMF;
+import tw.ttucse.cloudhw1.client.User;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -15,6 +15,7 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 	
 	public LoginServiceImpl() {
 		System.out.println("Checking if default user exitst");
+		
 		checkIfDefaultUserExist();
 	}
 	
@@ -39,15 +40,16 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 	}
 
 	@Override
-	public boolean login(String username, String password)
+	public boolean login(String account, String password)
 			throws IllegalArgumentException {
 		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
-		String query = "SELECT FROM " + User.class.getName() + " WHERE username == \'" + username + "\'";
+		String query = "SELECT FROM " + User.class.getName() + " WHERE account == \'" + account + "\'";
 		
 		try{
 			@SuppressWarnings("unchecked")
 			List<User> users = (List<User>) pm.newQuery(query).execute();
 
+			System.out.println(users.size());
 			if(users.isEmpty()){
 				return false;
 			} else {
