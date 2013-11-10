@@ -2,12 +2,21 @@ package tw.ttucse.cloudhw1.client;
 
 import java.io.Serializable;
 
-import javax.jdo.annotations.*;
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
+
 
 @PersistenceCapable
 public class User implements Serializable{
+	private static final long serialVersionUID = -5887296503614852877L;
+
 	@PrimaryKey 
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+	private Long ID;
+	
+	@Persistent
 	private String account;
 
 	@Persistent
@@ -49,4 +58,16 @@ public class User implements Serializable{
 		this.account = account;
 	}
 
+	public Long getID() {
+		return ID;
+	}
+
+	public void setID(Long iD) {
+		ID = iD;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return account.equals(((User)obj).getAccount());
+	}
 }

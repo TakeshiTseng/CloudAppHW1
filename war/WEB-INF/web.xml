@@ -15,6 +15,15 @@
     <servlet-name>LoginService</servlet-name>
     <url-pattern>/cloudapphw1/login</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>UserService</servlet-name>
+    <servlet-class>tw.ttucse.cloudhw1.server.UserServiceImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>UserService</servlet-name>
+    <url-pattern>/cloudapphw1/user</url-pattern>
+  </servlet-mapping>
   
   <!-- Default page to serve -->
   <welcome-file-list>

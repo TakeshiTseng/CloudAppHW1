@@ -1,42 +1,80 @@
 package tw.ttucse.cloudhw1.server;
 
+import java.util.Collection;
 import java.util.List;
 
+import javax.jdo.Extent;
+import javax.jdo.JDOUserException;
 import javax.jdo.PersistenceManager;
+import javax.jdo.Query;
+import javax.jdo.Transaction;
 
 import tw.ttucse.cloudhw1.client.PMF;
 import tw.ttucse.cloudhw1.client.User;
 import tw.ttucse.cloudhw1.client.UserService;
 
-import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-
-public class UserServiceImpl extends RemoteServiceServlet implements UserService{
+public class UserServiceImpl extends RemoteServiceServlet implements
+		UserService {
 	private static final long serialVersionUID = -2554257850851305233L;
 
-
 	public UserServiceImpl() {
-		System.out.println("userserviceImpl");
-//		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
-//		User user = new User("admin", "admin");
-//		try {
-//			pm.makePersistent(user);
-//		} finally {
-//			pm.close();
-//		}
-	}
-	
-	
-	@Override
-	public void addUser(User user) {
-		System.out.println("test");
-		
+		System.out.println("userserviceImpl loading scuess");
 	}
 
 	@Override
-	public void editUser(User user) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
+	public boolean addUser(User user) throws IllegalArgumentException {
+		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
+		String query = "SELECT FROM " + User.class.getName() + " WHERE account == \'" + user.getAccount() + "\'";
 		
+		try{
+			@SuppressWarnings("unchecked")
+			List<User> users = (List<User>) pm.newQuery(query).execute();
+			if(users.isEmpty()){
+				String query2 = "SELECT MAX(ID) FROM " + User.class.getName();
+				Long ID = (Long) pm.newQuery(query2).execute();
+				if(ID==null){
+					ID=new Long(0);
+				}
+				user.setID(ID+1);
+				pm.makePersistent(user);
+				pm.flush();
+			} else {
+				return false;
+			}
+		} finally{
+			pm.close();
+		}
+		System.out.println("add user service success");
+		return true;
+	}
+
+	@Override
+	public boolean editUser(User user) throws IllegalArgumentException {
+		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
+		Transaction transaction = pm.currentTransaction();
+		if(user.getAccount().equals("admin")){
+			return false;
+		}
+		try {
+			transaction.begin();
+			Extent<User> ext = pm.getExtent(User.class, false);
+			String str ="account==\""+user.getAccount()+"\"";
+			Query qry= pm.newQuery(ext, str); 
+			Collection<?> c = (Collection<?>) qry.execute();
+			Object obj = c.iterator().next();
+			((User)obj).setPassword(user.getPassword());
+			((User)obj).setUsername(user.getUsername());
+			pm.makePersistent(obj);
+			transaction.commit();
+		} catch(JDOUserException ex){
+			transaction.rollback();
+			throw ex;
+		}finally {
+			pm.close();
+		}
+		System.out.println("Modify user success.");
+		return true;
 	}
 
 	@Override
@@ -47,23 +85,40 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 
 	@Override
 	public boolean deleteUser(User user) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return false;
+		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
+		Transaction transaction = pm.currentTransaction();
+		if(user.getAccount().equals("admin")){
+			return false;
+		}
+		try {
+			transaction.begin();
+			Extent<User> ext = pm.getExtent(User.class, false);
+			String str ="account==\""+user.getAccount()+"\"";
+			Query qry= pm.newQuery(ext, str); 
+			Collection<?> c = (Collection<?>) qry.execute();
+			Object obj = c.iterator().next();
+			pm.deletePersistent (obj);
+			transaction.commit();
+		} catch(JDOUserException ex){
+			transaction.rollback();
+			throw ex;
+		}finally {
+			pm.close();
+		}
+		System.out.println("Remove user success.");
+		return true;
 	}
 
-
 	@Override
-	public List<User> getUsers() throws IllegalArgumentException {
-		System.out.println("test");
+	public User[] getUsers() throws IllegalArgumentException {
 		PersistenceManager pm = PMF.getInstance().getPersistenceManager();
-		String query = "SELECT FROM " + User.class.getName() ;
-		
-		try{
+		String query = "SELECT FROM " + User.class.getName();
+
+		try {
 			@SuppressWarnings("unchecked")
 			List<User> users = (List<User>) pm.newQuery(query).execute();
-			System.out.println(users.size());
-			return users;
-		} finally{
+			return users.toArray(new User[users.size()]);
+		} finally {
 			pm.close();
 		}
 	}

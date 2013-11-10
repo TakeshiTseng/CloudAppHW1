@@ -1,9 +1,5 @@
 package tw.ttucse.cloudhw1.client;
 
-import java.util.List;
-
-import sun.awt.HorizBagLayout;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -14,18 +10,27 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PasswordTextBox;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 
 public class LoginDialogBox extends DialogBox implements ClickHandler{
 	private final LoginServiceAsync loginServiceAsync = GWT.create(LoginService.class);
-	private final UserServiceAsync userServiceAsync = GWT.create(UserService.class);
 	LoginDialogBox thisPanel;
 	private PasswordTextBox password;
-	private TextBox username;
+	private TextBox accountTextBox;
 	Label errorMesssage;
 	public LoginDialogBox() {
-		
+		loginServiceAsync.init(new AsyncCallback<Void>() {
+			@Override
+			public void onFailure(Throwable caught) {
+			}
+
+			@Override
+			public void onSuccess(Void result) {
+			}
+		});
 		FlexTable flexTable = new FlexTable();
 		setWidget(flexTable);
 		flexTable.setSize("371px", "240px");
@@ -39,9 +44,9 @@ public class LoginDialogBox extends DialogBox implements ClickHandler{
 		Label label_2 = new Label("帳號");
 		flexTable.setWidget(1, 0, label_2);
 		
-		username = new TextBox();
-		flexTable.setWidget(1, 1, username);
-		username.setWidth("225px");
+		accountTextBox = new TextBox();
+		flexTable.setWidget(1, 1, accountTextBox);
+		accountTextBox.setWidth("225px");
 		
 		Label label_3 = new Label("密碼");
 		flexTable.setWidget(2, 0, label_3);
@@ -50,8 +55,11 @@ public class LoginDialogBox extends DialogBox implements ClickHandler{
 		flexTable.setWidget(2, 1, password);
 		password.setWidth("225px");
 		
+		HorizontalPanel horizontalPanel = new HorizontalPanel();
+		flexTable.setWidget(3, 1, horizontalPanel);
+		
 		Button button = new Button("登入");
-		flexTable.setWidget(3, 1, button);
+		horizontalPanel.add(button);
 		button.addClickHandler(this);
 		
 		thisPanel = this;
@@ -59,7 +67,7 @@ public class LoginDialogBox extends DialogBox implements ClickHandler{
 	
 	@Override
 	public void onClick(ClickEvent event) {
-		String account = username.getText();
+		String account = accountTextBox.getText();
 		String pwd = password.getText();
 		loginServiceAsync.login(account, pwd, new AsyncCallback<Boolean>() {
 			
@@ -68,7 +76,7 @@ public class LoginDialogBox extends DialogBox implements ClickHandler{
 				if(!result){
 					errorMesssage.setText("帳號或密碼有誤");
 				} else {
-					//errorMesssage.setText("登入成功");
+					RootPanel.get("mainWin").add(new MainWindowPanel());
 					final DialogBox dialogBox = new DialogBox();
 					dialogBox.setText("Remote Message.");
 					dialogBox.setAnimationEnabled(true);
@@ -87,21 +95,6 @@ public class LoginDialogBox extends DialogBox implements ClickHandler{
 					dialogBox.setWidget(verticalPanel);
 					thisPanel.hide();
 					dialogBox.center();
-					
-
-					userServiceAsync.getUsers(new AsyncCallback<List<User>>(){
-
-						@Override
-						public void onFailure(Throwable caught) {
-							System.out.println("failure");
-						}
-
-						@Override
-						public void onSuccess(List<User> result) {
-							System.out.println("success");
-						}
-						
-					});
 				}
 				
 			}

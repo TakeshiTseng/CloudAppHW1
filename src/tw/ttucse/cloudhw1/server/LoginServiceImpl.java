@@ -14,8 +14,10 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 	private static final long serialVersionUID = -384389817920530498L;
 	
 	public LoginServiceImpl() {
-		System.out.println("Checking if default user exitst");
-		
+	}
+	
+	public void init() {
+		System.out.println("Checking if default user exitst");		
 		checkIfDefaultUserExist();
 	}
 	
@@ -28,6 +30,8 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 		if(users.isEmpty()){
 			System.out.println("Default user not exist, add admin/admin....");
 			User user = new User("admin", "admin");
+			user.setUsername("admin");
+			user.setID(new Long(1));
 			try{
 				pm.makePersistent(user);
 			} finally{
@@ -48,8 +52,6 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 		try{
 			@SuppressWarnings("unchecked")
 			List<User> users = (List<User>) pm.newQuery(query).execute();
-
-			System.out.println(users.size());
 			if(users.isEmpty()){
 				return false;
 			} else {
