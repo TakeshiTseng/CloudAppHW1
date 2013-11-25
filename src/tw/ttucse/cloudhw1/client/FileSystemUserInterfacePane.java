@@ -25,12 +25,10 @@ public class FileSystemUserInterfacePane extends Composite{
 		absolutePanel.add(verticalPanel, 0, 0);
 		verticalPanel.setSize("450px", "63px");
 		
-		Label lblNewLabel = new Label("雲端硬碟");
+		Label lblNewLabel = new Label("CloudApp  -  File Systems");
+		lblNewLabel.setStyleName("FileSystemUI_Title");
 		
 		verticalPanel.add(lblNewLabel);
-		
-		Label lblNewLabel_1 = new Label("File System");
-		verticalPanel.add(lblNewLabel_1);
 		
 		HorizontalPanel horizontalPanel = new HorizontalPanel();
 		verticalPanel.add(horizontalPanel);
