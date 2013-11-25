@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.FlexTable;
 
 public class FileSystemUserInterfacePane extends Composite{
 	public FileSystemUserInterfacePane() {
@@ -42,5 +43,24 @@ public class FileSystemUserInterfacePane extends Composite{
 		
 		Button btnNewButton_1 = new Button("Upload File");
 		horizontalPanel.add(btnNewButton_1);
+		
+		AbsolutePanel absolutePanel_1 = new AbsolutePanel();
+		dockLayoutPanel.add(absolutePanel_1);
+		
+		VerticalPanel verticalPanel_1 = new VerticalPanel();
+		absolutePanel_1.add(verticalPanel_1, 10, 10);
+		verticalPanel_1.setSize("430px", "217px");
+		
+		FlexTable flexTable = new FlexTable();
+		flexTable.setBorderWidth(1);
+		flexTable.setCellSpacing(5);
+		flexTable.setCellPadding(5);
+		verticalPanel_1.add(flexTable);
+		
+		Label lblNewLabel_3 = new Label("File Name");
+		flexTable.setWidget(0, 0, lblNewLabel_3);
+		
+		Label lblNewLabel_4 = new Label("Remove");
+		flexTable.setWidget(0, 1, lblNewLabel_4);
 	}
 }
