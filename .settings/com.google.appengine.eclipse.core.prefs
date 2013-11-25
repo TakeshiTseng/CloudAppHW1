@@ -3,5 +3,7 @@ filesCopiedToWebInfLib=appengine-api-1.0-sdk-1.8.4.jar|appengine-api-labs.jar|ap
 gaeDatanucleusVersion=v2
 gaeDeployDialogSettings=
 gaeHrdEnabled=true
+googleCloudSqlEnabled=false
+localDevMySqlEnabled=true
 ormEnhancementInclusions=src/|test/|src/tw/ttucse/cloudhw1/jdo/User.java
 validationExclusions=src/tw/ttucse/cloudhw1/server/LoginServiceImpl.java
